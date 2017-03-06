@@ -1,6 +1,9 @@
 ---
 title: "Workings - Daily News for Stock Market Prediction"
-output: html_notebook
+output: 
+    html_notebook:
+        toc_float: TRUE
+        toc: TRUE
 ---
 
 # Import libraries
@@ -12,6 +15,7 @@ library(magrittr)
 # Import data
 ```{r}
 library(readr)
+
 comb.df <-
   read_csv(
   "D:/Code/R/Kaggle/stocknews/Data/Combined_News_DJIA.csv",
@@ -31,10 +35,7 @@ summary(djia.df)
 summary(reddit.df)
 ```
 
-
-
 # Data Exploration
-
 ## News
 View a selection of the Top 1 news:
 ```{r}
@@ -43,7 +44,8 @@ View a selection of the Top 1 news:
   dplyr::sample_n(20) %>%
   purrr::map(print)
 ```
-#DJIA
+
+##DJIA
 
 Plot the DJIA closing price:
 ```{r}
@@ -69,5 +71,11 @@ Days where returns where at the bottom 10%:
 daily.rets %>%
   dplyr::filter(`Daily Returns`  <= quantile(.$`Daily Returns`, 0.1)) %>%
   dplyr::arrange(Date)
+```
+
+Histogram of daily returns:
+```{r}
+ggplot(daily.rets, aes(x = `Daily Returns`)) +
+  geom_histogram(binwidth = 0.01)
 ```
 
