@@ -1,0 +1,73 @@
+---
+title: "Workings - Daily News for Stock Market Prediction"
+output: html_notebook
+---
+
+# Import libraries
+```{r}
+library(ggplot2)
+library(magrittr)
+```
+
+# Import data
+```{r}
+library(readr)
+comb.df <-
+  read_csv(
+  "D:/Code/R/Kaggle/stocknews/Data/Combined_News_DJIA.csv",
+  col_types = cols(Label = col_factor(levels = c("0",
+  "1")))
+  )
+  
+djia.df <- read_csv("D:/Code/R/Kaggle/stocknews/Data/DJIA_table.csv")
+reddit.df <- read_csv("D:/Code/R/Kaggle/stocknews/Data/RedditNews.csv")
+```
+The combined dataset has `r nrow(comb.df)` rows and `r ncol(comb.df)` columns.
+
+Summary of all 3 datasets:
+```{r}
+summary(comb.df)
+summary(djia.df)
+summary(reddit.df)
+```
+
+
+
+# Data Exploration
+
+## News
+View a selection of the Top 1 news:
+```{r}
+ comb.df %>%
+  dplyr::select(Top1) %>%
+  dplyr::sample_n(20) %>%
+  purrr::map(print)
+```
+#DJIA
+
+Plot the DJIA closing price:
+```{r}
+ggplot(djia.df, aes(x = Date, y = `Adj Close`)) +
+  geom_line()
+```
+Study the distribution of the daily returns:
+```{r}
+daily.rets <- xts::xts(djia.df$`Adj Close`, djia.df$Date) %>% 
+  quantmod::dailyReturn()  %>%
+  tidyquant::as_tibble(preserve_row_names = T)
+
+colnames(daily.rets) <- c("Date", "Daily Returns")
+
+daily.rets %<>%
+  dplyr::mutate(Date = lubridate::ymd(Date))
+
+summary(daily.rets)
+```
+
+Days where returns where at the bottom 10%:
+```{r}
+daily.rets %>%
+  dplyr::filter(`Daily Returns`  <= quantile(.$`Daily Returns`, 0.1)) %>%
+  dplyr::arrange(Date)
+```
+
