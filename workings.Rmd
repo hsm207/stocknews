@@ -12,6 +12,7 @@ library(magrittr)
 # Import data
 ```{r}
 library(readr)
+<<<<<<< HEAD
 comb.df <-
   read_csv(
   "D:/Code/R/Kaggle/stocknews/Data/Combined_News_DJIA.csv",
@@ -39,10 +40,24 @@ summary(reddit.df)
 View a selection of the Top 1 news:
 ```{r}
  comb.df %>%
+=======
+djia.df <- read_csv("D:/Code/R/Kaggle/stocknews/Data/Combined_News_DJIA.csv", 
+    col_types = cols(Label = col_factor(levels = c("0", 
+        "1"))))
+summary(djia.df)
+```
+The dataset has `r nrow(djia.df)` rows and `r ncol(djia.df)` columns.
+
+# Data Exploration
+View a selection of the Top 1 news:
+```{r}
+ djia.df %>%
+>>>>>>> d7b9c9963676a8179a12265061ebb5c7600719ba
   dplyr::select(Top1) %>%
   dplyr::sample_n(20) %>%
   purrr::map(print)
 ```
+<<<<<<< HEAD
 #DJIA
 
 Plot the DJIA closing price:
@@ -70,4 +85,6 @@ daily.rets %>%
   dplyr::filter(`Daily Returns`  <= quantile(.$`Daily Returns`, 0.1)) %>%
   dplyr::arrange(Date)
 ```
+=======
+>>>>>>> d7b9c9963676a8179a12265061ebb5c7600719ba
 
