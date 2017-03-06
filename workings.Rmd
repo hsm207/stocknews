@@ -1,0 +1,30 @@
+---
+title: "Workings - Daily News for Stock Market Prediction"
+output: html_notebook
+---
+
+# Import libraries
+```{r}
+library(ggplot2)
+library(magrittr)
+```
+
+# Import data
+```{r}
+library(readr)
+djia.df <- read_csv("D:/Code/R/Kaggle/stocknews/Data/Combined_News_DJIA.csv", 
+    col_types = cols(Label = col_factor(levels = c("0", 
+        "1"))))
+summary(djia.df)
+```
+The dataset has `r nrow(djia.df)` rows and `r ncol(djia.df)` columns.
+
+# Data Exploration
+View a selection of the Top 1 news:
+```{r}
+ djia.df %>%
+  dplyr::select(Top1) %>%
+  dplyr::sample_n(20) %>%
+  purrr::map(print)
+```
+
