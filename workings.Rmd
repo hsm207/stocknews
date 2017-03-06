@@ -35,15 +35,20 @@ summary(djia.df)
 summary(reddit.df)
 ```
 
+The dataset has `r nrow(djia.df)` rows and `r ncol(djia.df)` columns.
+
 # Data Exploration
+
 ## News
 View a selection of the Top 1 news:
 ```{r}
  comb.df %>%
+
   dplyr::select(Top1) %>%
   dplyr::sample_n(20) %>%
   purrr::map(print)
 ```
+
 
 ##DJIA
 
@@ -73,9 +78,11 @@ daily.rets %>%
   dplyr::arrange(Date)
 ```
 
+
 Histogram of daily returns:
 ```{r}
 ggplot(daily.rets, aes(x = `Daily Returns`)) +
   geom_histogram(binwidth = 0.01)
 ```
+
 
